@@ -31,21 +31,7 @@ app.get('/', (req, res, next) => {
 
 
 
-//bármilyen fájlt ki tudunk szolgálni
-app.get('/kismacska', (req, res, next) => {
-    res.sendFile(path.join(`${__dirname}/../frontend/somefile.json`));
-} )
 
-
-
-//bármilyen megadott endpointon működik
-app.get('/something', (req, res, next) => {
-    //terminálban jelenik meg
-    console.log("Request recieved on something endpoint");
-
-    //res.send megjelenik az oldalon
-    res.send("Thank you for your request! This is our response for something endpoint")
-} )
 
 
 const studentFile = path.join(`${__dirname}/../frontend/students.json`)
@@ -75,96 +61,66 @@ app.get('/api/students', (req, res, next) => {
 
 
 
-app.get('/api/students/', (req, res, next) => {
-    console.dir(req.query.apiKey)
 
-    
-    if (req.query.apiKey === "apple") {
-        res.sendFile(userFile)
-    } else {
-        res.send('Unauthorized request')
-    }
 
-    
-} )
-
-/*
-app.get('/api/v1/users-params/:key', (req, res, next) => {
-    console.dir(req.params)
-    console.log(req.params.key)
-    // res.send('helloka')
-    
-    if (req.params.key === "apple") {
-        res.send("you typed in apple")
-    } else {
-        res.send("you didnt type in apple")
-    }
-    
-    
-} )
-*/
-
-/*
-//passzív aktív userek
-app.get('/api/v1/users/active', (req, res, next) => {
+app.get('/api/status/active', (req, res, next) => {
     //fs module, readfile (elérési útvonal, callback func)
-    fs.readFile(userFile, (err, data) => {
+    fs.readFile(studentFile, (err, data) => {
         if (err) {
             res.send("Something went wrong")
         }
         else {
             //parse => js objectummá alakítja a json stringet
-            const users = JSON.parse(data)
+            const students = JSON.parse(data)
             //const activeUsers = users.filter(user => user.status === "active")
-            res.send(users.filter(user => user.status === "active"))
+            res.send(students.filter(student => student.status === true))
         }
     })
 } )
-app.get('/api/v1/users/passive', (req, res, next) => {
-    fs.readFile(userFile, (err, data) => {
+
+
+
+app.get('/api/status/finished', (req, res, next) => {
+    fs.readFile(studentFile, (err, data) => {
         if (err) {
             res.send("Something went wrong")
         }
         else {
             //parse => js objectummá alakítja a json stringet
-            const users = JSON.parse(data)
-            //const passiveUsers = users.filter(user => user.status === "passive")
-            res.send(users.filter(user => user.status === "passive"))
+            const students = JSON.parse(data)
+            //const activeUsers = users.filter(user => user.status === "active")
+            res.send(students.filter(student => student.status === false))
         }
     })
 } )
-*/
 
 
-app.get('/api/v1/users-params/:key', (req, res, next) => {
+
+app.get('/api/students/:key', (req, res, next) => {
     console.dir(req.params)
     console.log(req.params.key)
-    // res.send('helloka')
     
-    /*
-    if (req.params.key === "active") {
-        //res.send("you typed in apple")
-        res.send(users.filter(user => user.status === "active"))
-    } else if (req.params.key === "passive") {
-        //res.send("you didnt type in apple")
-        res.send(users.filter(user => user.status === "passive"))
-    }
-    */
     
-    fs.readFile(userFile, (err, data) => {
-        const users = JSON.parse(data)
+    fs.readFile(studentFile, (err, data) => {
+        const students = JSON.parse(data)
         if (err) {
+
             res.send("Something went wrong")
-        }
-        else if (req.params.key === "passive") {
+
+        } else if (req.params.key === "1") {
+
+
             
-            res.send(users.filter(user => user.status === "passive"))
+            res.send(students.filter(student => student.id === 1))
 
-        } else if (req.params.key === "active") {
+        } else if (req.params.key === "2") {
            
-            res.send(users.filter(user => user.status === "active"))
+            res.send(students.filter(student => student.id === 2))
 
         }
+
+
+        
     })
     
 } )
