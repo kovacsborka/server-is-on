@@ -107,21 +107,13 @@ app.get('/api/students/:key', (req, res, next) => {
 
             res.send("Something went wrong")
 
-        } else if (req.params.key === "1") {
+        } else {
 
 
             
-            res.send(students.filter(student => student.id === 1))
+            res.send(students.filter(student => student.id === parseInt(req.params.key)))
 
-        } else if (req.params.key === "2") {
-           
-            res.send(students.filter(student => student.id === 2))
-
-        }
-
-
-        
-
+        } 
     })
     
 } )
